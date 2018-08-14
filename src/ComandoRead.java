@@ -28,6 +28,7 @@ class ComandoRead extends Comando {
 
       // Se tudo der certo vamos armazenar o valor da string na posição seguindo [a...z] mapeados [0...25].
       // Sendo a variável "a" a posição 0 e assim por diante.
+      // Se não der certo a leitura iremos armazenar o valor default na variável.
       if(variavel == 'a'){
          Variaveis.var[0] = valorFloat;
       }else if(variavel == 'b'){
