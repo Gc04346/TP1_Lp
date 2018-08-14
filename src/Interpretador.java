@@ -1,5 +1,6 @@
 import java.io.*;  
 import java.util.*;
+import java.util.Stack;
 
 import lp.*; 
 
@@ -7,10 +8,15 @@ class Interpretador {
     private ArquivoFonte arq; // Arquivos fontes.
     private Vector comandos; // Conjunto de comandos.
     private String palavraAtual; // Provavelmente o comando que está sendo lido.
-   		
+    private Stack pilha;
+    //criaremos um vetor de chars com as letras do alfabeto para verificar se a palavraAtual eh uma variavel
+    //{'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'}
+    private String alfabeto;
+
     public Interpretador(String nome) {
       arq= new ArquivoFonte(nome);
       comandos= new Vector();
+      alfabeto = "a b c d e f g h i j k l m n o p q r s t u v w x y z";
     }
    
     public void listaArquivo() {
@@ -113,8 +119,57 @@ class Interpretador {
         ComandoWriteVar c = new ComandoWriteVar(lin, variavel);
         comandos.addElement(c);
     }
-      
 
+    private void trataExpressao() {
+        palavraAtual= arq.proximaPalavra();
+        pilha= new Stack();
+        expressao();
+        raizArvoreExpressao= pilha.pop();
+    }  
+
+    private void expressao() {
+        termo();
+        while ((palavraAtual.equals("+")) || (palavraAtual.equals("-"))){
+          op= palavraAtual;
+          palavraAtual= arq.proximaPalavra();
+          termo();
+          exp1= pilha.pop();
+          exp2= pilha.pop();
+          pilha.push(new ExpBinaria(op,exp1,exp2));
+        }  
+    }
+
+    private void termo() {
+        fator();
+        while ((palavraAtual.equals("*")) || (palavraAtual.equals("/"))){
+          op = palavraAtual;
+          palavraAtual= arq.proximaPalavra();
+          fator();
+          exp1= pilha.pop();
+          exp2= pilha.pop();
+          pilha.push(new ExpBinaria(op,exp1,exp2));
+        }  
+    }
+
+    private void fator() {
+        //se o tamanho da string palavraAtual for igual a 1, significa que eh uma variavel
+        if (alfabeto.contains(palavraAtual)) {
+           pilha.push(new ExpVariavel(palavraAtual));
+           palavraAtual= arq.proximaPalavra();
+        }   
+        else if (palavraAtual == "("){
+            palavraAtual= arq.proximaPalavra();
+            expressao();
+        } 
+        else if (palavraAtual = ")"){
+            palavraAtual= arq.proximaPalavra();
+        } 
+        else {
+            pilha.push(new ExpConstante(palavraAtual));
+            palavraAtual= arq.proximaPalavra();
+        }   
+    }
+    
     public void executa() {
       Comando cmd;
       int pc= 0;
