@@ -42,6 +42,9 @@ class Interpretador {
          }else if(comandoAtual.equals("read")){
             trataComandoRead(linha);
             linha++;
+         }else if(comandoAtual.equals("writeVar")){
+            trataComandoWriteVar(linha);
+            linha++;
          }
                            		  
       } while (!comandoAtual.equals("endp"));
@@ -91,6 +94,23 @@ class Interpretador {
         }
 
         ComandoRead c = new ComandoRead(lin, variavel);
+        comandos.addElement(c);
+    }
+
+    private void trataComandoWriteVar(int lin){
+        // Lendo os tokens esperados.
+        String primParen = arq.proximaPalavra();
+        String variavel = arq.proximaPalavra();
+        String segParen = arq.proximaPalavra();
+
+        // Verificando o melhor caso.
+        if(!primParen.equals("(")){
+            System.out.println("Erro !!");
+        }else if(!segParen.equals(")")){
+            System.out.println("Erro !!");
+        }
+
+        ComandoWriteVar c = new ComandoWriteVar(lin, variavel);
         comandos.addElement(c);
     }
       

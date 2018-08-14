@@ -81,7 +81,6 @@ class ComandoRead extends Comando {
       }else if(variavel == 'z'){
          Variaveis.var[25] = valorFloat;
       }
-      
       return linha+1;
    }
 }
