@@ -90,7 +90,8 @@ class Interpretador {
             System.out.println("Erro !!");
         }
 
-        // Continua.
+        ComandoRead c = new ComandoRead(lin, variavel);
+        comandos.addElement(c);
     }
       
 
