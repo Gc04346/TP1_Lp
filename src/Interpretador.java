@@ -4,26 +4,26 @@ import java.util.*;
 import lp.*; 
 
 class Interpretador {
-   private ArquivoFonte arq; // Arquivos fontes.
-   private Vector comandos; // Conjunto de comandos.
-   private String palavraAtual; // Provavelmente o comando que está sendo lido.
+    private ArquivoFonte arq; // Arquivos fontes.
+    private Vector comandos; // Conjunto de comandos.
+    private String palavraAtual; // Provavelmente o comando que está sendo lido.
    		
-   public Interpretador(String nome) {
+    public Interpretador(String nome) {
       arq= new ArquivoFonte(nome);
       comandos= new Vector();
-   }
+    }
    
-   public void listaArquivo() {
+    public void listaArquivo() {
       String palavra;
       
       do {
          palavra= arq.proximaPalavra();
          System.out.println ("Palavra: " + palavra);
       } while (!palavra.equals("EOF"));
-   }
+    }
    
-   // Lendo o arquivo fonte.
-   public void leArquivo() {
+    // Lendo o arquivo fonte e captando os coamndos para tratamento.
+    public void leArquivo() {
       String comandoAtual;
       int linha= 0;
       do {
@@ -39,23 +39,28 @@ class Interpretador {
          }else if(comandoAtual.equals("writeStr")){
              trataComandoWriteStr(linha);
              linha++;
+         }else if(comandoAtual.equals("read")){
+            trataComandoRead(linha);
+            linha++;
          }
                            		  
       } while (!comandoAtual.equals("endp"));
-   }
-   
-   // Tratamento dos comandos.
-   private void trataComandoEndp(int lin) {
+    }
+
+    // Tratamento dos comandos.
+    // Tratamento dos comandos endp e writeln já foram feitos.
+    private void trataComandoEndp(int lin) {
       ComandoEndp c= new ComandoEndp(lin);
       comandos.addElement(c);
-   }
-   	   	
-   private void trataComandoWriteln(int lin) {
+    }
+    	   	
+    private void trataComandoWriteln(int lin) {
       ComandoWriteln c= new ComandoWriteln(lin);
       comandos.addElement(c);
-   }
-   
-   private void trataComandoWriteStr(int lin){
+    }
+
+    // Tratamento com divisão e obtenção da string que será impressa no terminal.
+    private void trataComandoWriteStr(int lin){
         // Lendo os tokens esperados.
         String primParen = arq.proximaPalavra();
         String string = arq.proximaPalavra();
@@ -63,23 +68,38 @@ class Interpretador {
 
         // Verificando os tokens.
         if(!primParen.equals("(")){
-            System.out.println("Erro de Sintaxe !!");
+            System.out.println("Erro !!");
         }else if(!segParen.equals(")")){
-            System.out.println("Erro de Sintaxe !!");
+            System.out.println("Erro !!");
         }
 
        ComandoWriteStr c = new ComandoWriteStr(lin, string);
        comandos.addElement(c);
-   }
+    }
+
+    private void trataComandoRead(int lin){
+        // Lendo os tokens esperados.
+        String primParen = arq.proximaPalavra();
+        String variavel = arq.proximaPalavra();
+        String segParen = arq.proximaPalavra();
+
+        // Verificando o melhor caso apenas.
+        if(!primParen.equals("(")){
+            System.out.println("Erro !!");
+        }else if(!segParen.equals(")")){
+            System.out.println("Erro !!");
+        }
+
+        // Continua.
+    }
       
-   
-   public void executa() {
-      
+
+    public void executa() {
       Comando cmd;
       int pc= 0;
       do {
          cmd= (Comando) comandos.elementAt(pc);
          pc= cmd.executa();
       } while (pc != -1);
-   }   
+    }   
 }
