@@ -1,2 +1,3 @@
-writeStr("Daniel Inteligentao");
+read(a);
+writeVar(a);
 endp
