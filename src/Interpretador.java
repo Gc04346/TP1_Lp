@@ -152,11 +152,12 @@ class Interpretador {
     }
 
     private void fator() {
-        //se o tamanho da string palavraAtual for igual a 1, significa que eh uma variavel
+        //alfabeto eh uma string com todas as letras do alfabeto
         if (alfabeto.contains(palavraAtual)) {
+            //tem que mandar pra pilha o valor da variavel enviada em new ExpVariavel(palavraAtual)
            pilha.push(new ExpVariavel(palavraAtual));
            palavraAtual= arq.proximaPalavra();
-        }   
+        }
         else if (palavraAtual == "("){
             palavraAtual= arq.proximaPalavra();
             expressao();
