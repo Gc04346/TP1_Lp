@@ -1,6 +1,6 @@
-import lp.*; 
+import lp.*;
 /*eh responsabilidade desta classe identificar operadores, +,-,/,*,<,>,<=,>=,==,!=.
-  caso encontre algum operador matemático (+,-,*,/) deve ser interrompida instantaneamente, para que este 
+  caso encontre algum operador matemático (+,-,*,/) deve ser interrompida instantaneamente, para que este
   operador seja encontrado em arq.palavraAtual, e a classe Interpretador trabalhe sobre este fato, já
   que isto eh trabalho dela. caso contrario, caso encontre um operador logico(<,>,<=,>=,==,!=), deve lancar
   uma expBinaria?
@@ -73,10 +73,10 @@ public class ExpVariavel extends Expressao{
     }
 
     public float avalia(){
-        valorVar = getValor();   
-        operador = arq.proximaPalavra(); //com este comando, esta variavel contem um operador matematico (nada deve ser feito aqui) ou um operador logico(que deve ser tratado)
-        if(arq.proximaPalavra().equals("=")) //se for um operador logico composto, isto deve ser concatenado na variavel operador
-            operador.concat(arq.palavraAtual());
+        valorVar = getValor();
+        // operador = arq.proximaPalavra(); //com este comando, esta variavel contem um operador matematico (nada deve ser feito aqui) ou um operador logico(que deve ser tratado)
+        // if(arq.proximaPalavra().equals("=")) //se for um operador logico composto, isto deve ser concatenado na variavel operador
+        //     operador.concat(arq.palavraAtual());
         return valorVar;
     }
 }

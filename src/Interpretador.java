@@ -12,6 +12,7 @@ class Interpretador {
     //criaremos um vetor de chars com as letras do alfabeto para verificar se a palavraAtual eh uma variavel
     //{'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'}
     private String alfabeto;
+    private Expressao raizArvoreExpressao;
 
     public Interpretador(String nome) {
       arq= new ArquivoFonte(nome);
@@ -51,6 +52,15 @@ class Interpretador {
          }else if(comandoAtual.equals("writeVar")){
             trataComandoWriteVar(linha);
             linha++;
+         }else if(alfabeto.contains(comandoAtual)){
+             // Mudar essa parte e criar uma classe comando atrib.
+            String proxPalavra = arq.proximaPalavra();
+            if(proxPalavra.equals(":=")){
+                trataExpressao();
+                linha++;
+            }else
+                System.out.println("Erro: variavel nao pode ser acessada pois nao foi inicializada");
+                linha++;
          }
                            		  
       } while (!comandoAtual.equals("endp"));
@@ -124,17 +134,17 @@ class Interpretador {
         palavraAtual= arq.proximaPalavra();
         pilha= new Stack();
         expressao();
-        raizArvoreExpressao= pilha.pop();
+        raizArvoreExpressao= (Expressao) pilha.pop();
     }  
 
     private void expressao() {
         termo();
         while ((palavraAtual.equals("+")) || (palavraAtual.equals("-"))){
-          op= palavraAtual;
+          String op= palavraAtual;
           palavraAtual= arq.proximaPalavra();
           termo();
-          exp1= pilha.pop();
-          exp2= pilha.pop();
+          Expressao exp1= pilha.pop();
+          Expressao exp2= pilha.pop();
           pilha.push(new ExpBinaria(op,exp1,exp2));
         }  
     }
@@ -142,11 +152,11 @@ class Interpretador {
     private void termo() {
         fator();
         while ((palavraAtual.equals("*")) || (palavraAtual.equals("/"))){
-          op = palavraAtual;
+          String op = palavraAtual;
           palavraAtual= arq.proximaPalavra();
           fator();
-          exp1= pilha.pop();
-          exp2= pilha.pop();
+          Expressao exp1= pilha.pop();
+          Expressao exp2= pilha.pop();
           pilha.push(new ExpBinaria(op,exp1,exp2));
         }  
     }
@@ -158,11 +168,11 @@ class Interpretador {
            pilha.push(new ExpVariavel(palavraAtual));
            palavraAtual= arq.proximaPalavra();
         }
-        else if (palavraAtual == "("){
+        else if (palavraAtual.equals("(")){
             palavraAtual= arq.proximaPalavra();
             expressao();
         } 
-        else if (palavraAtual = ")"){
+        else if (palavraAtual.equals(")")){
             palavraAtual= arq.proximaPalavra();
         } 
         else {
