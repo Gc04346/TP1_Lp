@@ -9,8 +9,6 @@ class Interpretador {
     private Vector comandos; // Conjunto de comandos.
     private String palavraAtual; // Provavelmente o comando que está sendo lido.
     private Stack pilha;
-    //criaremos um vetor de chars com as letras do alfabeto para verificar se a palavraAtual eh uma variavel
-    //{'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'}
     private String alfabeto;
     private Expressao raizArvoreExpressao;
 
@@ -52,15 +50,9 @@ class Interpretador {
          }else if(comandoAtual.equals("writeVar")){
             trataComandoWriteVar(linha);
             linha++;
-         }else if(alfabeto.contains(comandoAtual)){
-             // Mudar essa parte e criar uma classe comando atrib.
-            String proxPalavra = arq.proximaPalavra();
-            if(proxPalavra.equals(":=")){
-                trataExpressao();
-                linha++;
-            }else
-                System.out.println("Erro: variavel nao pode ser acessada pois nao foi inicializada");
-                linha++;
+         }else if(alfabeto.contains(comandoAtual)){ // Verificação única. Caso a linha inicie com uma verificação é uma atribuição.
+            trataComandoAtrib(linha);
+            linha++;            
          }
                            		  
       } while (!comandoAtual.equals("endp"));
@@ -130,11 +122,28 @@ class Interpretador {
         comandos.addElement(c);
     }
 
+    private void trataComandoAtrib(int lin){
+        // comandoAtual guarda nesse ponto o nome da variável.
+        String proxPalavra = arq.proximaPalavra(); 
+
+        // Vrificação do melhor caso.
+        if(proxPalavra.equals(":=")){ // Caso seja realmente uma atribuição chamamos o trataExpressao.
+          trataExpressao();
+          linha++;
+        }else{
+          System.out.println("Erro: variavel nao pode ser acessada pois nao foi inicializada");
+          linha++;
+        }
+
+
+    }
+
     private void trataExpressao() {
         palavraAtual= arq.proximaPalavra();
         pilha= new Stack();
         expressao();
-        raizArvoreExpressao= (Expressao) pilha.pop();
+        // Não entendi porque precisamos da raiz !!
+        raizArvoreExpressao = (Expressao) pilha.pop();
     }  
 
     private void expressao() {
