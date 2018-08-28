@@ -1,20 +1,25 @@
 public class ExpBinaria extends Expressao{
     private String operador;
-    private float exp1, exp2;
+    private Expressao exp1, exp2;
 
-    public ExpBinaria(String operador, String exp1, String exp2){
+    public ExpBinaria(String operador, Expressao exp1, Expressao exp2){
         this.operador = operador;
-        this.exp1 = Float.parseFloat(exp1);
-        this.exp2 = Float.parseFloat(exp2);
+        this.exp1 = exp1;
+        this.exp2 = exp2;
     }
 
     public float avalia(){
+        float avalia1 = 0, avalia2 = 0;
+        avalia1 = this.exp1.avalia(); // Valor da avaliação da primeira expressão.
+        avalia2 = this.exp2.avalia(); // Valor da avaliação da segunda expressão.
+        System.out.println(avalia1);
+        System.out.println(avalia2);
         switch (operador){
-            case "+": return exp2 + exp1;
-            case "-": return exp2 - exp1;
-            case "*": return exp2 * exp1;
-            case "/": return exp2 / exp1;
+            case "+": return avalia2 + avalia1;
+            case "-": return avalia2 - avalia1;
+            case "*": return avalia2 * avalia1;
+            case "/": return avalia2 / avalia1;
         }
-        return null;
+        return 0;
     }
 }

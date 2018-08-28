@@ -15,7 +15,7 @@ public class ExpVariavel extends Expressao{
     }
 
     private float getValor(){
-        float v;
+        float v=0;
         if(nomevar == 'a'){
             v = Variaveis.var[0];
          }else if(nomevar == 'b'){

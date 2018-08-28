@@ -51,7 +51,7 @@ class Interpretador {
             trataComandoWriteVar(linha);
             linha++;
          }else if(alfabeto.contains(comandoAtual)){ // Verificação única. Caso a linha inicie com uma verificação é uma atribuição.
-            trataComandoAtrib(linha);
+            trataComandoAtrib(linha, comandoAtual);
             linha++;            
          }
                            		  
@@ -122,10 +122,10 @@ class Interpretador {
         comandos.addElement(c);
     }
 
-    private void trataComandoAtrib(int lin){
+    private void trataComandoAtrib(int lin, String var){
         // comandoAtual guarda nesse ponto o nome da variável.
         String proxPalavra = arq.proximaPalavra();
-        float valor; 
+        float valor=0; 
 
         // Vrificação do melhor caso.
         if(proxPalavra.equals(":=")){ // Caso seja realmente uma atribuição chamamos o trataExpressao.
@@ -136,7 +136,7 @@ class Interpretador {
         }
 
         // Criar um objeto comando e colocar na lista de execeução.
-        ComandoAtrib c = new ComandoAtrib(lin, comandoAtual, valor);
+        ComandoAtrib c = new ComandoAtrib(lin, var, valor);
         comandos.addElement(c);
     }
 
@@ -153,8 +153,8 @@ class Interpretador {
           String op= palavraAtual;
           palavraAtual= arq.proximaPalavra();
           termo();
-          Expressao exp1= pilha.pop();
-          Expressao exp2= pilha.pop();
+          Expressao exp1= (Expressao) pilha.pop();
+          Expressao exp2= (Expressao) pilha.pop();
           pilha.push(new ExpBinaria(op,exp1,exp2));
         }  
     }
@@ -165,8 +165,8 @@ class Interpretador {
           String op = palavraAtual;
           palavraAtual= arq.proximaPalavra();
           fator();
-          Expressao exp1= pilha.pop();
-          Expressao exp2= pilha.pop();
+          Expressao exp1= (Expressao) pilha.pop();
+          Expressao exp2= (Expressao) pilha.pop();
           pilha.push(new ExpBinaria(op,exp1,exp2));
         }  
     }
