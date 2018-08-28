@@ -1,4 +1,3 @@
-import lp.*;
 /*eh responsabilidade desta classe identificar operadores, +,-,/,*,<,>,<=,>=,==,!=.
   caso encontre algum operador matemático (+,-,*,/) deve ser interrompida instantaneamente, para que este
   operador seja encontrado em arq.palavraAtual, e a classe Interpretador trabalhe sobre este fato, já
@@ -16,6 +15,7 @@ public class ExpVariavel extends Expressao{
     }
 
     private float getValor(){
+        float v;
         if(nomevar == 'a'){
             v = Variaveis.var[0];
          }else if(nomevar == 'b'){

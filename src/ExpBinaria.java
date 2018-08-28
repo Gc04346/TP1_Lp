@@ -1,5 +1,3 @@
-import lp.*;
-
 public class ExpBinaria extends Expressao{
     private String operador;
     private float exp1, exp2;

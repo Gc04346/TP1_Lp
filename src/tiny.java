@@ -1,8 +1,6 @@
 import java.io.*;  
 import java.util.*;
 
-import lp.*;      
-
 public class tiny {
    // Função principal.
    public static void main(String[] args) {

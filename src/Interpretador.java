@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 import java.util.Stack;
 
-import lp.*; 
+import lp.*;
 
 class Interpretador {
     private ArquivoFonte arq; // Arquivos fontes.
@@ -124,25 +124,26 @@ class Interpretador {
 
     private void trataComandoAtrib(int lin){
         // comandoAtual guarda nesse ponto o nome da variável.
-        String proxPalavra = arq.proximaPalavra(); 
+        String proxPalavra = arq.proximaPalavra();
+        float valor; 
 
         // Vrificação do melhor caso.
         if(proxPalavra.equals(":=")){ // Caso seja realmente uma atribuição chamamos o trataExpressao.
           trataExpressao();
-          linha++;
+          valor = raizArvoreExpressao.avalia(); // Calcular o valor resultante.
         }else{
           System.out.println("Erro: variavel nao pode ser acessada pois nao foi inicializada");
-          linha++;
         }
 
-
+        // Criar um objeto comando e colocar na lista de execeução.
+        ComandoAtrib c = new ComandoAtrib(lin, comandoAtual, valor);
+        comandos.addElement(c);
     }
 
     private void trataExpressao() {
         palavraAtual= arq.proximaPalavra();
         pilha= new Stack();
         expressao();
-        // Não entendi porque precisamos da raiz !!
         raizArvoreExpressao = (Expressao) pilha.pop();
     }  
 

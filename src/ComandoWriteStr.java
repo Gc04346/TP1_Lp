@@ -1,8 +1,6 @@
 import java.io.*;  
 import java.util.*;
 
-import lp.*; 
-
 class ComandoWriteStr extends Comando {
    
    String texto;

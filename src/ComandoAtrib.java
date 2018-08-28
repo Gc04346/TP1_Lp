@@ -1,27 +1,15 @@
-import java.io.*;
-import java.util.*;
-import java.util.Stack;
-
-import lp.*;
-
 class ComandoAtrib extends Comando {
 	char variavel;
 	float valor;
 	Expressao exp;
 
-	ComandoAtrib(int lin, String var, Stack pilha, Expressao raiz){
+	ComandoAtrib(int lin, String var, float valor){
 		linha = lin;
 		variavel = var.charAt(0);
+		this.valor = valor;
 	}
 
 	public int executa(){
-		// Vamos analisar todas as expressões da pilha.
-		exp = (Expressao) pilha.pop(); // Retirando a primeira expressão.
-		while(exp != null){ // Enquanto houver expressões.
-			valor = exp.avalia();
-			exp = (Expressao) pilha.pop();
-		}
-		valor = raiz.avalia();
 		// Depois de avaliar vamos atribuir o valor a variável.
 		if(variavel == 'a'){
          	Variaveis.var[0] = valor;

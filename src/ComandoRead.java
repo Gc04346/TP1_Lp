@@ -1,8 +1,6 @@
 import java.io.*;  
 import java.util.*;
 
-import lp.*; 
-
 class ComandoRead extends Comando {
    
    BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
