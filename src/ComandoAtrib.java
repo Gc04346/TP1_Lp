@@ -3,14 +3,16 @@ class ComandoAtrib extends Comando {
 	float valor;
 	Expressao exp;
 
-	ComandoAtrib(int lin, String var, float valor){
+	ComandoAtrib(int lin, String var, Expressao raiz){
 		linha = lin;
 		variavel = var.charAt(0);
-		this.valor = valor;
+		this.exp = raiz;
+      this.valor = 0;
 	}
 
 	public int executa(){
 		// Depois de avaliar vamos atribuir o valor a variável.
+      valor = exp.avalia(); // Obtemos o valor da expressão avaliada.
 		if(variavel == 'a'){
          	Variaveis.var[0] = valor;
       	}else if(variavel == 'b'){

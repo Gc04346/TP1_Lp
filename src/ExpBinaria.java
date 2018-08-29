@@ -12,8 +12,6 @@ public class ExpBinaria extends Expressao{
         float avalia1 = 0, avalia2 = 0;
         avalia1 = this.exp1.avalia(); // Valor da avaliação da primeira expressão.
         avalia2 = this.exp2.avalia(); // Valor da avaliação da segunda expressão.
-        System.out.println(avalia1);
-        System.out.println(avalia2);
         switch (operador){
             case "+": return avalia2 + avalia1;
             case "-": return avalia2 - avalia1;

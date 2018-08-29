@@ -8,3 +8,4 @@ writeStr("Coeficiente c= ");
 read(c);
 d:= b * b - 4 * a * c ;
 writeVar(d);
+endp

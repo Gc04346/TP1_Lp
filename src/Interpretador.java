@@ -129,14 +129,13 @@ class Interpretador {
 
         // Vrificação do melhor caso.
         if(proxPalavra.equals(":=")){ // Caso seja realmente uma atribuição chamamos o trataExpressao.
-          trataExpressao();
-          valor = raizArvoreExpressao.avalia(); // Calcular o valor resultante.
+          trataExpressao(); // Tratamos a expressão e ela será salva na raiz.
         }else{
           System.out.println("Erro: variavel nao pode ser acessada pois nao foi inicializada");
         }
 
         // Criar um objeto comando e colocar na lista de execeução.
-        ComandoAtrib c = new ComandoAtrib(lin, var, valor);
+        ComandoAtrib c = new ComandoAtrib(lin, var, raizArvoreExpressao);
         comandos.addElement(c);
     }
 
