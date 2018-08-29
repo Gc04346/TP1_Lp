@@ -15,7 +15,7 @@ class Interpretador {
     public Interpretador(String nome) {
       arq= new ArquivoFonte(nome);
       comandos= new Vector();
-      alfabeto = "a b c d e f g h i j k l m n o p q r s t u v w x y z";
+      alfabeto = "a b c d e f g h i j k l m n o p q r s t u v w x y z"; // Utilizado para verificar a existência de uma variável.
     }
    
     public void listaArquivo() {
@@ -139,6 +139,7 @@ class Interpretador {
         comandos.addElement(c);
     }
 
+    // trataExpressao deve cuidar dos casos onde surge alguma função de cálculo específica.
     private void trataExpressao() {
         palavraAtual= arq.proximaPalavra();
         pilha= new Stack();
@@ -171,20 +172,24 @@ class Interpretador {
     }
 
     private void fator() {
-        //alfabeto eh uma string com todas as letras do alfabeto
+        Expressao sqrt;
+        // alfabeto eh uma string com todas as letras do alfabeto
         if (alfabeto.contains(palavraAtual)) {
-            //tem que mandar pra pilha o valor da variavel enviada em new ExpVariavel(palavraAtual)
-           pilha.push(new ExpVariavel(palavraAtual));
-           palavraAtual= arq.proximaPalavra();
-        }
-        else if (palavraAtual.equals("(")){
+            // tem que mandar pra pilha o valor da variavel enviada em new ExpVariavel(palavraAtual)
+            pilha.push(new ExpVariavel(palavraAtual));
+            palavraAtual= arq.proximaPalavra();
+        } else if (palavraAtual.equals("(")){
             palavraAtual= arq.proximaPalavra();
             expressao();
-        } 
-        else if (palavraAtual.equals(")")){
+        } else if (palavraAtual.equals(")")){
             palavraAtual= arq.proximaPalavra();
-        } 
-        else {
+        } else if (palavraAtual.equals("sqrt")) { // Nesse ponto vamos para a proxima palavra para analisar a expressão.
+            palavraAtual = arq.proximaPalavra();
+            expressao(); // Vai avaliar a expressão da raiz e deixar na última posição da pilha.
+            sqrt = (Expressao) pilha.pop(); // Retiro a expressao analizada.
+            pilha.push(new ExpSqrt(sqrt)); // Empilho a raiz com a expressão.
+            palavraAtual = arq.proximaPalavra();
+        } else {
             pilha.push(new ExpConstante(palavraAtual));
             palavraAtual= arq.proximaPalavra();
         }   

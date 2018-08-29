@@ -11,7 +11,6 @@ public class ExpVariavel extends Expressao{
 
     public ExpVariavel(String palavraAtual){
         nomevar = palavraAtual.charAt(0);
-        avalia(); //nao sei se isto eh suficiente para retornar o valor da variavel passada como parametro por Interpretador...
     }
 
     private float getValor(){
