@@ -126,15 +126,15 @@ class Interpretador {
         // comandoAtual guarda nesse ponto o nome da variável.
         String proxPalavra = arq.proximaPalavra();
         float valor=0; 
-
+        
         // Vrificação do melhor caso.
         if(proxPalavra.equals(":=")){ // Caso seja realmente uma atribuição chamamos o trataExpressao.
-          trataExpressao(); // Tratamos a expressão e ela será salva na raiz.
+            trataExpressao(); // Tratamos a expressão e ela será salva na raiz.
+            // Criar um objeto comando e colocar na lista de execeução.
         }else{
-          System.out.println("Erro: variavel nao pode ser acessada pois nao foi inicializada");
+            System.out.println("Erro: variavel nao pode ser acessada pois nao foi inicializada");
         }
 
-        // Criar um objeto comando e colocar na lista de execeução.
         ComandoAtrib c = new ComandoAtrib(lin, var, raizArvoreExpressao);
         comandos.addElement(c);
     }
@@ -185,9 +185,7 @@ class Interpretador {
             palavraAtual= arq.proximaPalavra();
         } else if (palavraAtual.equals("sqrt")) { // Nesse ponto vamos para a proxima palavra para analisar a expressão.
             palavraAtual = arq.proximaPalavra();
-            expressao(); // Vai avaliar a expressão da raiz e deixar na última posição da pilha.
-            sqrt = (Expressao) pilha.pop(); // Retiro a expressao analizada.
-            pilha.push(new ExpSqrt(sqrt)); // Empilho a raiz com a expressão.
+            pilha.push(new ExpSqrt(palavraAtual)); // Empilho a raiz com a expressão.
             palavraAtual = arq.proximaPalavra();
         } else {
             pilha.push(new ExpConstante(palavraAtual));
