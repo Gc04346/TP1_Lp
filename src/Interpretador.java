@@ -53,6 +53,9 @@ class Interpretador {
          }else if(alfabeto.contains(comandoAtual)){ // Verificação única. Caso a linha inicie com uma verificação é uma atribuição.
             trataComandoAtrib(linha, comandoAtual);
             linha++;            
+         }else if(comandoAtual.equals("if")){
+             trataComandoIf(linha);
+             linha++;
          }
                            		  
       } while (!comandoAtual.equals("endp"));
@@ -137,6 +140,11 @@ class Interpretador {
         // Criar um objeto comando e colocar na lista de execeução.
         ComandoAtrib c = new ComandoAtrib(lin, var, raizArvoreExpressao);
         comandos.addElement(c);
+    }
+
+    private void trataComandoIf(int lin){
+        trataExpressao();
+        ComandoIf c = new ComandoIf(lin, raizArvoreExpressao);
     }
 
     private void trataExpressao() {

@@ -17,6 +17,24 @@ public class ExpBinaria extends Expressao{
             case "-": return avalia2 - avalia1;
             case "*": return avalia2 * avalia1;
             case "/": return avalia2 / avalia1;
+            case ">": if(avalia2>avalia1) 
+                            return 1;
+                        else return 0;
+            case "<": if(avalia2<avalia1) 
+                            return 1;
+                        else return 0;
+            case ">=": if(avalia2>=avalia1) 
+                            return 1;
+                        else return 0;
+            case "<=": if(avalia2<=avalia1) 
+                            return 1;
+                        else return 0;
+            case "==": if(avalia2 == avalia1) 
+                            return 1;
+                        else return 0;
+            case "<>": if(avalia2 != avalia1) 
+                            return 1;
+                        else return 0;
         }
         return 0;
     }
