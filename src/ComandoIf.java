@@ -8,6 +8,8 @@ class ComandoIf extends Comando{
     public int executa(){
         if(exp.avalia()){
 
+        }else{
+
         }
     }
 }

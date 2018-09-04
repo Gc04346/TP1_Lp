@@ -145,14 +145,30 @@ class Interpretador {
     private void trataComandoIf(int lin){
         trataExpressao();
         ComandoIf c = new ComandoIf(lin, raizArvoreExpressao);
+        comandos.addElement(c);
     }
 
     private void trataExpressao() {
         palavraAtual= arq.proximaPalavra();
         pilha= new Stack();
-        expressao();
+        expressaoLogica();
         raizArvoreExpressao = (Expressao) pilha.pop();
     }  
+
+    private void expressaoLogica(){
+        expressaoComparativa();
+        while ((palavraAtual.equals("and")) || (palavraAtual.equals("or")) || (palavraAtual.equals("not"))){
+
+        }
+    }
+
+    private void expressaoComparativa(){
+        expressao();
+        while ((palavraAtual.equals(">")) || (palavraAtual.equals("<")) || (palavraAtual.equals("<>"))
+        || (palavraAtual.equals("<=")) || (palavraAtual.equals(">=")) || (palavraAtual.equals("="))){
+
+        }
+    }
 
     private void expressao() {
         termo();

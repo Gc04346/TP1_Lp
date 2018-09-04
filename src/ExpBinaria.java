@@ -8,6 +8,7 @@ public class ExpBinaria extends Expressao{
         this.exp2 = exp2;
     }
 
+    // TODO: Colocar a expresão lógica dentro de uma classe específica.
     public float avalia(){
         float avalia1 = 0, avalia2 = 0;
         avalia1 = this.exp1.avalia(); // Valor da avaliação da primeira expressão.
@@ -17,24 +18,6 @@ public class ExpBinaria extends Expressao{
             case "-": return avalia2 - avalia1;
             case "*": return avalia2 * avalia1;
             case "/": return avalia2 / avalia1;
-            case ">": if(avalia2>avalia1) 
-                            return 1;
-                        else return 0;
-            case "<": if(avalia2<avalia1) 
-                            return 1;
-                        else return 0;
-            case ">=": if(avalia2>=avalia1) 
-                            return 1;
-                        else return 0;
-            case "<=": if(avalia2<=avalia1) 
-                            return 1;
-                        else return 0;
-            case "==": if(avalia2 == avalia1) 
-                            return 1;
-                        else return 0;
-            case "<>": if(avalia2 != avalia1) 
-                            return 1;
-                        else return 0;
         }
         return 0;
     }
