@@ -158,7 +158,12 @@ class Interpretador {
     private void expressaoLogica(){
         expressaoComparativa();
         while ((palavraAtual.equals("and")) || (palavraAtual.equals("or")) || (palavraAtual.equals("not"))){
-
+            String op= palavraAtual;
+            palavraAtual= arq.proximaPalavra();
+            expressaoComparativa();
+            Expressao exp1= (Expressao) pilha.pop();
+            Expressao exp2= (Expressao) pilha.pop();
+            pilha.push(new ExpLogica(op,exp1,exp2));
         }
     }
 
@@ -166,7 +171,12 @@ class Interpretador {
         expressao();
         while ((palavraAtual.equals(">")) || (palavraAtual.equals("<")) || (palavraAtual.equals("<>"))
         || (palavraAtual.equals("<=")) || (palavraAtual.equals(">=")) || (palavraAtual.equals("="))){
-
+            String op= palavraAtual;
+            palavraAtual= arq.proximaPalavra();
+            expressao();
+            Expressao exp1= (Expressao) pilha.pop();
+            Expressao exp2= (Expressao) pilha.pop();
+            pilha.push(new ExpComparativa(op,exp1,exp2));
         }
     }
 
