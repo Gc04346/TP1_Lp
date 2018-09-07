@@ -1,11 +1,5 @@
-writeStr("Informe os coeficientes da equacao do 2o grau");
-writeln;
-writeStr("Coeficiente a= ");
-read(a);
-writeStr("Coeficiente b= ");
-read(b);
-writeStr("Coeficiente c= ");
-read(c);
-d:= b * b - 4 * a * c ;
-writeVar(d);
+a:= 5 ;
+b:= 6 ;
+c:= 7 ;
+if(a=b) ; 
 endp
