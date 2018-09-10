@@ -29,8 +29,12 @@ class Interpretador {
    
     // Lendo o arquivo fonte e captando os coamndos para tratamento.
     public void leArquivo() {
+        Stack pilhaC= new Stack();
       String comandoAtual;
       int linha= 0;
+
+      pilhaC.push(linha);
+
       do {
          comandoAtual= arq.proximaPalavra();
             
@@ -54,8 +58,17 @@ class Interpretador {
             trataComandoAtrib(linha, comandoAtual);
             linha++;            
          }else if(comandoAtual.equals("if")){
-             trataComandoIf(linha);
-             linha++;
+            pilhaC.push(linha);
+            trataComandoIf(linha);
+            linha++;					
+         }else if(comandoAtual.equals("else")){
+            int linhaIf = (Integer)pilhaC.pop();
+            pilhaC.push(linha);
+            trataComandoElse(linha, linhaIf);
+            linha++;					
+         }else if(comandoAtual.equals("endif")){
+            int linhaIf = (Integer)pilhaC.pop();
+            trataComandoEndif(linha, linhaIf);				
          }
                            		  
       } while (!comandoAtual.equals("endp"));
@@ -144,9 +157,23 @@ class Interpretador {
 
     private void trataComandoIf(int lin){
         trataExpressao();
+        if(!palavraAtual.equals("then"))
+            System.out.println("Erro: sintaxe incorreta. Faltou o then.");
         ComandoIf c = new ComandoIf(lin, raizArvoreExpressao);
         comandos.addElement(c);
     }
+
+    private void trataComandoElse(int lin, int linIf) {
+        ComandoIf cmd= (ComandoIf) comandos.elementAt(linIf);
+        cmd.setLinhaEnd(lin+1);
+        ComandoElse c= new ComandoElse(lin);
+        comandos.addElement(c);  
+      }
+       
+    private void trataComandoEndif(int lin, int linIfElse) {
+        Condicao cmd= (Condicao) comandos.elementAt(linIfElse);
+        cmd.setLinhaEnd(lin); 
+      }
 
     private void trataExpressao() {
         palavraAtual= arq.proximaPalavra();
