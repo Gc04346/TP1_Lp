@@ -1,4 +1,3 @@
-import Comando.Condicao;
 
 class ComandoIf extends Comando implements Condicao{
     Expressao exp;

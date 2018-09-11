@@ -1,4 +1,3 @@
-import Comando.Condicao;
 
 public class ComandoElse extends Comando implements Condicao {
    
@@ -13,7 +12,7 @@ public class ComandoElse extends Comando implements Condicao {
     }
 	
    public int executa() {			
-        return 1;
+        return linhaEnd;
    }
 }
 

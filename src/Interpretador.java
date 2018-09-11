@@ -1,7 +1,6 @@
 import java.io.*;  
 import java.util.*;
 import java.util.Stack;
-import Comando.*;
 import lp.*;
 
 class Interpretador {
