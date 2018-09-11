@@ -183,7 +183,7 @@ class Interpretador {
 
     private void expressaoLogica(){
         expressaoComparativa();
-        while ((palavraAtual.equals("and")) || (palavraAtual.equals("or")) || (palavraAtual.equals("not"))){
+        while ((palavraAtual.equals("and")) || (palavraAtual.equals("or"))){
             String op= palavraAtual;
             palavraAtual= arq.proximaPalavra();
             expressaoComparativa();
@@ -240,8 +240,12 @@ class Interpretador {
         else if (palavraAtual.equals("(")){
             palavraAtual= arq.proximaPalavra();
             expressao();
-        } 
-        else if (palavraAtual.equals(")")){
+        } else if(palavraAtual.equals("not")){
+            palavraAtual= arq.proximaPalavra();
+            expressaoLogica();
+            Expressao exp= (Expressao) pilha.pop();
+            pilha.push(new ExpLogica("not",exp,exp));
+        }else if (palavraAtual.equals(")")){
             palavraAtual= arq.proximaPalavra();
         } 
         else {

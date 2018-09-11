@@ -22,7 +22,9 @@ public class ExpLogica extends Expressao{
                     return 1;
                 return 0;
             case "not": 
-                // e agora jose?
+                if(avalia1!=0)
+                    return 0;
+                return 1;
         }
         return 0;
     }
