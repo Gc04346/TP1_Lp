@@ -1,7 +1,5 @@
-package Comando;
-	
-import Variavel.*;
-	 
+import Comando.Condicao;
+
 public class ComandoElse extends Comando implements Condicao {
    
    int linhaEnd;
@@ -15,7 +13,7 @@ public class ComandoElse extends Comando implements Condicao {
     }
 	
    public int executa() {			
-        
+        return 1;
    }
 }
 

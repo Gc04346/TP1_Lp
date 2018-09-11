@@ -1,7 +1,7 @@
 import java.io.*;  
 import java.util.*;
 import java.util.Stack;
-
+import Comando.*;
 import lp.*;
 
 class Interpretador {
@@ -157,7 +157,7 @@ class Interpretador {
 
     private void trataComandoIf(int lin){
         trataExpressao();
-        if(!palavraAtual.equals("then"))
+        if(!arq.proximaPalavra().equals("then"))
             System.out.println("Erro: sintaxe incorreta. Faltou o then.");
         ComandoIf c = new ComandoIf(lin, raizArvoreExpressao);
         comandos.addElement(c);

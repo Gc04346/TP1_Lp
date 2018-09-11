@@ -1,5 +1,5 @@
- package Comando;
- 
- public interface Condicao {
+package Comando;
+
+public interface Condicao {
  	public void setLinhaEnd(int x);
  }

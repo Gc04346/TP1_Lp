@@ -1,7 +1,4 @@
 import Comando.Condicao;
-	
-import Variavel.*;
-import Expressao.*;
 
 class ComandoIf extends Comando implements Condicao{
     Expressao exp;

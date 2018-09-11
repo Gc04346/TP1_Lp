@@ -1,5 +1,12 @@
 a:= 5 ;
 b:= 6 ;
 c:= 7 ;
-if(a=b) ; 
+if(a=b)then
+    writeStr  ("Digite o valor de x");
+    read (x);
+    writeln;
+    writeStr ("O valor digitado foi: ");
+    writeVar (x);
+endif
+writeStr ("Nao entrei no if");
 endp
