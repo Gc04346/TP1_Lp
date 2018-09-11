@@ -53,6 +53,9 @@ class Interpretador {
          }else if(alfabeto.contains(comandoAtual)){ // Verificação única. Caso a linha inicie com uma verificação é uma atribuição.
             trataComandoAtrib(linha, comandoAtual);
             linha++;            
+         }else if(comandoAtual.equals("if")){
+             trataComandoIf(linha);
+             linha++;
          }
                            		  
       } while (!comandoAtual.equals("endp"));
@@ -139,13 +142,46 @@ class Interpretador {
         comandos.addElement(c);
     }
 
+
     // trataExpressao deve cuidar dos casos onde surge alguma função de cálculo específica.
+
+    private void trataComandoIf(int lin){
+        trataExpressao();
+        ComandoIf c = new ComandoIf(lin, raizArvoreExpressao);
+        comandos.addElement(c);
+    }
+
     private void trataExpressao() {
         palavraAtual= arq.proximaPalavra();
         pilha= new Stack();
-        expressao();
+        expressaoLogica();
         raizArvoreExpressao = (Expressao) pilha.pop();
     }  
+
+    private void expressaoLogica(){
+        expressaoComparativa();
+        while ((palavraAtual.equals("and")) || (palavraAtual.equals("or")) || (palavraAtual.equals("not"))){
+            String op= palavraAtual;
+            palavraAtual= arq.proximaPalavra();
+            expressaoComparativa();
+            Expressao exp1= (Expressao) pilha.pop();
+            Expressao exp2= (Expressao) pilha.pop();
+            pilha.push(new ExpLogica(op,exp1,exp2));
+        }
+    }
+
+    private void expressaoComparativa(){
+        expressao();
+        while ((palavraAtual.equals(">")) || (palavraAtual.equals("<")) || (palavraAtual.equals("<>"))
+        || (palavraAtual.equals("<=")) || (palavraAtual.equals(">=")) || (palavraAtual.equals("="))){
+            String op= palavraAtual;
+            palavraAtual= arq.proximaPalavra();
+            expressao();
+            Expressao exp1= (Expressao) pilha.pop();
+            Expressao exp2= (Expressao) pilha.pop();
+            pilha.push(new ExpComparativa(op,exp1,exp2));
+        }
+    }
 
     private void expressao() {
         termo();
