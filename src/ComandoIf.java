@@ -4,7 +4,7 @@ class ComandoIf extends Comando implements Condicao{
     int linhaEnd;
     int lin;
 
-    ComandoIf(int lin, Expressao exp){
+    public ComandoIf(int lin, Expressao exp){
         this.lin = lin;
         this.exp=exp;
     }
