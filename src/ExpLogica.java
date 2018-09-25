@@ -14,15 +14,17 @@ public class ExpLogica extends Expressao{
         avalia2 = this.exp2.avalia(); // Valor da avaliação da segunda expressão.
         switch (operador){
             case "and": 
-                if(avalia2 * avalia1)
+                if(avalia2 > 0 && avalia1 > 0)
                     return 1;
                 return 0;
             case "or": 
-                if(avalia2 + avalia1)
+                if(avalia2 > 0 || avalia1 > 0)
                     return 1;
                 return 0;
             case "not": 
-                // e agora jose?
+                if(avalia1!=0)
+                    return 0;
+                return 1;
         }
         return 0;
     }

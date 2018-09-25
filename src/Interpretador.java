@@ -1,7 +1,6 @@
 import java.io.*;  
 import java.util.*;
 import java.util.Stack;
-
 import lp.*;
 
 class Interpretador {
@@ -11,6 +10,7 @@ class Interpretador {
     private Stack pilha;
     private String alfabeto;
     private Expressao raizArvoreExpressao;
+    private String var;
 
     public Interpretador(String nome) {
       arq= new ArquivoFonte(nome);
@@ -23,14 +23,18 @@ class Interpretador {
       
       do {
          palavra= arq.proximaPalavra();
-         System.out.println ("Palavra: " + palavra);
+        //  System.out.println ("Palavra: " + palavra);
       } while (!palavra.equals("EOF"));
     }
    
     // Lendo o arquivo fonte e captando os coamndos para tratamento.
     public void leArquivo() {
+      Stack pilhaC= new Stack();
       String comandoAtual;
       int linha= 0;
+
+      pilhaC.push(linha);
+
       do {
          comandoAtual= arq.proximaPalavra();
             
@@ -54,7 +58,34 @@ class Interpretador {
             trataComandoAtrib(linha, comandoAtual);
             linha++;            
          }else if(comandoAtual.equals("if")){
-             trataComandoIf(linha);
+            pilhaC.push(linha);
+            trataComandoIf(linha);
+            linha++;					
+         }else if(comandoAtual.equals("else")){
+            int linhaIf = (Integer)pilhaC.pop();
+            pilhaC.push(linha);
+            trataComandoElse(linha, linhaIf);
+            linha++;					
+         }else if(comandoAtual.equals("endif")){
+            int linhaIf = (Integer)pilhaC.pop();
+            trataComandoEndif(linha, linhaIf);
+            linha++;				
+         }else if(comandoAtual.equals("while")){
+            pilhaC.push(linha);
+            trataComandoWhile(linha);
+            linha++;
+         }else if(comandoAtual.equals("endw")){
+            int linhaWhile = (Integer)pilhaC.pop();
+            trataComandoEndw(linha, linhaWhile);
+            linha++;
+         }else if(comandoAtual.equals("for")){
+             pilhaC.push(linha);
+             trataComandoFor(linha,arq.proximaPalavra());
+             linha++;
+         }else if (comandoAtual.equals("endfor")){
+             int linhaFor = (Integer)pilhaC.pop();
+            //  System.out.println(linhaFor);
+             trataComandoEndFor(linha,linhaFor+1);
              linha++;
          }
                            		  
@@ -132,11 +163,10 @@ class Interpretador {
         
         // Vrificação do melhor caso.
         if(proxPalavra.equals(":=")){ // Caso seja realmente uma atribuição chamamos o trataExpressao.
-            trataExpressao(); // Tratamos a expressão e ela será salva na raiz.
-            // Criar um objeto comando e colocar na lista de execeução.
-        }else{
-            System.out.println("Erro: variavel nao pode ser acessada pois nao foi inicializada");
-        }
+          trataExpressao(); // Tratamos a expressão e ela será salva na raiz.
+         }//else{
+        //   System.out.println("Erro: variavel nao pode ser acessada pois nao foi inicializada");
+        // }
 
         ComandoAtrib c = new ComandoAtrib(lin, var, raizArvoreExpressao);
         comandos.addElement(c);
@@ -147,7 +177,51 @@ class Interpretador {
 
     private void trataComandoIf(int lin){
         trataExpressao();
+        // if(!arq.proximaPalavra().equals("then"))
+        //     System.out.println("Erro: sintaxe incorreta. Faltou o then.");
         ComandoIf c = new ComandoIf(lin, raizArvoreExpressao);
+        comandos.addElement(c);
+    }
+
+    private void trataComandoElse(int lin, int linIf) {
+        ComandoIf cmd= (ComandoIf) comandos.elementAt(linIf);
+        cmd.setLinhaEnd(lin+1);
+        ComandoElse c= new ComandoElse(lin);
+        comandos.addElement(c);  
+      }
+       
+    private void trataComandoEndif(int lin, int linIfElse) {
+        Condicao cmd= (Condicao) comandos.elementAt(linIfElse);
+        cmd.setLinhaEnd(lin); 
+      }
+
+    private void trataComandoWhile(int lin){
+        trataExpressao();
+        // if(!arq.proximaPalavra().equals("do"))
+        //     System.out.println("Erro: sintaxe incorreta. Faltou o do.");
+        ComandoWhile c = new ComandoWhile(lin, raizArvoreExpressao);
+        comandos.addElement(c);
+    }
+
+    private void trataComandoEndw(int lin, int linWhile){
+        ComandoWhile cmd= (ComandoWhile) comandos.elementAt(linWhile);
+        cmd.setLinhaEnd(lin);
+        ComandoEndw c = new ComandoEndw(lin, linWhile);
+        comandos.addElement(c);
+    }
+
+    private void trataComandoFor(int lin, String var){
+        trataComandoAtrib(lin, var);
+        String tipoFor = palavraAtual; //se tiver dando errado, talvez seja porque o downto ainda nao esteja na palavraAtual
+        trataExpressao(); // TrataExpressao referente a expressão do valor objetivo. Para onde queremos ir.
+        ComandoFor c = new ComandoFor(lin+1, raizArvoreExpressao, tipoFor, var);
+        comandos.addElement(c);
+    }
+
+    private void trataComandoEndFor(int lin, int linhaFor){
+        ComandoFor cmd = (ComandoFor) comandos.elementAt(linhaFor);
+        cmd.setLinhaEnd(lin);
+        ComandoEndf c = new ComandoEndf(lin, linhaFor, cmd.getVar(), cmd.getTipoFor());
         comandos.addElement(c);
     }
 
@@ -160,7 +234,7 @@ class Interpretador {
 
     private void expressaoLogica(){
         expressaoComparativa();
-        while ((palavraAtual.equals("and")) || (palavraAtual.equals("or")) || (palavraAtual.equals("not"))){
+        while ((palavraAtual.equals("and")) || (palavraAtual.equals("or"))){
             String op= palavraAtual;
             palavraAtual= arq.proximaPalavra();
             expressaoComparativa();
@@ -217,7 +291,16 @@ class Interpretador {
         } else if (palavraAtual.equals("(")){
             palavraAtual= arq.proximaPalavra();
             expressao();
+<<<<<<< HEAD
         } else if (palavraAtual.equals(")")){
+=======
+        } else if(palavraAtual.equals("not")){
+            palavraAtual= arq.proximaPalavra();
+            expressaoLogica();
+            Expressao exp= (Expressao) pilha.pop();
+            pilha.push(new ExpLogica("not",exp,exp));
+        }else if (palavraAtual.equals(")")){
+>>>>>>> ec4b837f2665aa1727c65c10952c637373f575b9
             palavraAtual= arq.proximaPalavra();
         } else if (palavraAtual.equals("sqrt")) { // Nesse ponto vamos para a proxima palavra para analisar a expressão.
             palavraAtual = arq.proximaPalavra();
