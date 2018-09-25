@@ -1,0 +1,14 @@
+Procedimentos Tp de LP
+    - O procedimento main() sempre será o último procedimento.
+    - O professor recomenda ler e salvar todos os procedimentos.
+    - O programa será uma lista de procedimentos.
+    - Variáveis locais terão nomes diferentes das globais.
+    - O professor implementou uma classe de memória especial para controlar as variáveis locais.
+    - Local deve estar na primeira linha do procedimento.
+    - Global deve estar na primeira linha do programa.
+    - Sugestão: implementar um pilha de procedimentos no interpretador.
+    - Sugestão: fazer uma classe proc e endproc.
+    - Variáveis sem declaração como local ou global passa a ser um erro que deve ser detectato em nível de execução.
+    - A execução do programa deve começar do procedimento main()
+    - Não precisamos implementar recursão.
+    - Parâmetros são sempre passados por valor. Não vamos utilizar variáveis.
