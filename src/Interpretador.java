@@ -10,6 +10,7 @@ class Interpretador {
     private Stack pilha;
     private String alfabeto;
     private Expressao raizArvoreExpressao;
+    private String var;
 
     public Interpretador(String nome) {
       arq= new ArquivoFonte(nome);
@@ -22,13 +23,13 @@ class Interpretador {
       
       do {
          palavra= arq.proximaPalavra();
-         System.out.println ("Palavra: " + palavra);
+        //  System.out.println ("Palavra: " + palavra);
       } while (!palavra.equals("EOF"));
     }
    
     // Lendo o arquivo fonte e captando os coamndos para tratamento.
     public void leArquivo() {
-        Stack pilhaC= new Stack();
+      Stack pilhaC= new Stack();
       String comandoAtual;
       int linha= 0;
 
@@ -67,7 +68,25 @@ class Interpretador {
             linha++;					
          }else if(comandoAtual.equals("endif")){
             int linhaIf = (Integer)pilhaC.pop();
-            trataComandoEndif(linha, linhaIf);				
+            trataComandoEndif(linha, linhaIf);
+            linha++;				
+         }else if(comandoAtual.equals("while")){
+            pilhaC.push(linha);
+            trataComandoWhile(linha);
+            linha++;
+         }else if(comandoAtual.equals("endw")){
+            int linhaWhile = (Integer)pilhaC.pop();
+            trataComandoEndw(linha, linhaWhile);
+            linha++;
+         }else if(comandoAtual.equals("for")){
+             pilhaC.push(linha);
+             trataComandoFor(linha,arq.proximaPalavra());
+             linha++;
+         }else if (comandoAtual.equals("endfor")){
+             int linhaFor = (Integer)pilhaC.pop();
+            //  System.out.println(linhaFor);
+             trataComandoEndFor(linha,linhaFor+1);
+             linha++;
          }
                            		  
       } while (!comandoAtual.equals("endp"));
@@ -145,9 +164,9 @@ class Interpretador {
         // Vrificação do melhor caso.
         if(proxPalavra.equals(":=")){ // Caso seja realmente uma atribuição chamamos o trataExpressao.
           trataExpressao(); // Tratamos a expressão e ela será salva na raiz.
-        }else{
-          System.out.println("Erro: variavel nao pode ser acessada pois nao foi inicializada");
-        }
+         }//else{
+        //   System.out.println("Erro: variavel nao pode ser acessada pois nao foi inicializada");
+        // }
 
         // Criar um objeto comando e colocar na lista de execeução.
         ComandoAtrib c = new ComandoAtrib(lin, var, raizArvoreExpressao);
@@ -156,8 +175,8 @@ class Interpretador {
 
     private void trataComandoIf(int lin){
         trataExpressao();
-        if(!arq.proximaPalavra().equals("then"))
-            System.out.println("Erro: sintaxe incorreta. Faltou o then.");
+        // if(!arq.proximaPalavra().equals("then"))
+        //     System.out.println("Erro: sintaxe incorreta. Faltou o then.");
         ComandoIf c = new ComandoIf(lin, raizArvoreExpressao);
         comandos.addElement(c);
     }
@@ -173,6 +192,36 @@ class Interpretador {
         Condicao cmd= (Condicao) comandos.elementAt(linIfElse);
         cmd.setLinhaEnd(lin); 
       }
+
+    private void trataComandoWhile(int lin){
+        trataExpressao();
+        // if(!arq.proximaPalavra().equals("do"))
+        //     System.out.println("Erro: sintaxe incorreta. Faltou o do.");
+        ComandoWhile c = new ComandoWhile(lin, raizArvoreExpressao);
+        comandos.addElement(c);
+    }
+
+    private void trataComandoEndw(int lin, int linWhile){
+        ComandoWhile cmd= (ComandoWhile) comandos.elementAt(linWhile);
+        cmd.setLinhaEnd(lin);
+        ComandoEndw c = new ComandoEndw(lin, linWhile);
+        comandos.addElement(c);
+    }
+
+    private void trataComandoFor(int lin, String var){
+        trataComandoAtrib(lin, var);
+        String tipoFor = palavraAtual; //se tiver dando errado, talvez seja porque o downto ainda nao esteja na palavraAtual
+        trataExpressao(); // TrataExpressao referente a expressão do valor objetivo. Para onde queremos ir.
+        ComandoFor c = new ComandoFor(lin+1, raizArvoreExpressao, tipoFor, var);
+        comandos.addElement(c);
+    }
+
+    private void trataComandoEndFor(int lin, int linhaFor){
+        ComandoFor cmd = (ComandoFor) comandos.elementAt(linhaFor);
+        cmd.setLinhaEnd(lin);
+        ComandoEndf c = new ComandoEndf(lin, linhaFor, cmd.getVar(), cmd.getTipoFor());
+        comandos.addElement(c);
+    }
 
     private void trataExpressao() {
         palavraAtual= arq.proximaPalavra();

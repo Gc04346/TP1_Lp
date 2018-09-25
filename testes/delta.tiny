@@ -1,14 +1,5 @@
-a:= 5 ;
-b:= 6 ;
-c:= 7 ;
-if(a>b)then
-    writeStr  ("Digite o valor de x");
-    read (x);
-    writeln;
-    writeStr ("O valor digitado foi: ");
-    writeVar (x);
-else
-writeStr ("Nao entrei no if");
-endif
-writeStr ("adeusinho");
+for i:= 12 downto 11 do 
+  writeStr ("Eu sou burro");
+  writeVar (i);
+endfor
 endp
