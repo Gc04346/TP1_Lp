@@ -10,6 +10,7 @@ class Interpretador {
     private Stack pilha;
     private String alfabeto;
     private Expressao raizArvoreExpressao;
+    private String var;
 
     public Interpretador(String nome) {
       arq= new ArquivoFonte(nome);
@@ -22,7 +23,7 @@ class Interpretador {
       
       do {
          palavra= arq.proximaPalavra();
-         System.out.println ("Palavra: " + palavra);
+        //  System.out.println ("Palavra: " + palavra);
       } while (!palavra.equals("EOF"));
     }
    
@@ -77,6 +78,15 @@ class Interpretador {
             int linhaWhile = (Integer)pilhaC.pop();
             trataComandoEndw(linha, linhaWhile);
             linha++;
+         }else if(comandoAtual.equals("for")){
+             pilhaC.push(linha);
+             trataComandoFor(linha,arq.proximaPalavra());
+             linha++;
+         }else if (comandoAtual.equals("endfor")){
+             int linhaFor = (Integer)pilhaC.pop();
+            //  System.out.println(linhaFor);
+             trataComandoEndFor(linha,linhaFor+1);
+             linha++;
          }
                            		  
       } while (!comandoAtual.equals("endp"));
@@ -195,6 +205,21 @@ class Interpretador {
         ComandoWhile cmd= (ComandoWhile) comandos.elementAt(linWhile);
         cmd.setLinhaEnd(lin);
         ComandoEndw c = new ComandoEndw(lin, linWhile);
+        comandos.addElement(c);
+    }
+
+    private void trataComandoFor(int lin, String var){
+        trataComandoAtrib(lin, var);
+        String tipoFor = palavraAtual; //se tiver dando errado, talvez seja porque o downto ainda nao esteja na palavraAtual
+        trataExpressao(); // TrataExpressao referente a expressão do valor objetivo. Para onde queremos ir.
+        ComandoFor c = new ComandoFor(lin+1, raizArvoreExpressao, tipoFor, var);
+        comandos.addElement(c);
+    }
+
+    private void trataComandoEndFor(int lin, int linhaFor){
+        ComandoFor cmd = (ComandoFor) comandos.elementAt(linhaFor);
+        cmd.setLinhaEnd(lin);
+        ComandoEndf c = new ComandoEndf(lin, linhaFor, cmd.getVar(), cmd.getTipoFor());
         comandos.addElement(c);
     }
 
