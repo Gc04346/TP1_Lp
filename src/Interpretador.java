@@ -80,12 +80,15 @@ class Interpretador {
             linha++;
          }else if(comandoAtual.equals("for")){
              pilhaC.push(linha);
-             trataComandoFor(linha,arq.proximaPalavra());
+             String variavel = arq.proximaPalavra();
+             comandoAtual = arq.proximaPalavra();
+             String varValor = arq.proximaPalavra();
+             String tipo = arq.proximaPalavra();
+             trataComandoFor(linha, variavel, varValor, tipo);
              linha++;
          }else if (comandoAtual.equals("endfor")){
              int linhaFor = (Integer)pilhaC.pop();
-            //  System.out.println(linhaFor);
-             trataComandoEndFor(linha,linhaFor+1);
+             trataComandoEndFor(linha,linhaFor);
              linha++;
          }
                            		  
@@ -210,11 +213,9 @@ class Interpretador {
         comandos.addElement(c);
     }
 
-    private void trataComandoFor(int lin, String var){
-        trataComandoAtrib(lin, var);
-        String tipoFor = palavraAtual; //se tiver dando errado, talvez seja porque o downto ainda nao esteja na palavraAtual
+    private void trataComandoFor(int lin, String var, String varValor, String tipo){
         trataExpressao(); // TrataExpressao referente a expressão do valor objetivo. Para onde queremos ir.
-        ComandoFor c = new ComandoFor(lin+1, raizArvoreExpressao, tipoFor, var);
+        ComandoFor c = new ComandoFor(lin, var, varValor, tipo, raizArvoreExpressao);
         comandos.addElement(c);
     }
 
@@ -291,16 +292,12 @@ class Interpretador {
         } else if (palavraAtual.equals("(")){
             palavraAtual= arq.proximaPalavra();
             expressao();
-<<<<<<< HEAD
-        } else if (palavraAtual.equals(")")){
-=======
         } else if(palavraAtual.equals("not")){
             palavraAtual= arq.proximaPalavra();
             expressaoLogica();
             Expressao exp= (Expressao) pilha.pop();
             pilha.push(new ExpLogica("not",exp,exp));
         }else if (palavraAtual.equals(")")){
->>>>>>> ec4b837f2665aa1727c65c10952c637373f575b9
             palavraAtual= arq.proximaPalavra();
         } else if (palavraAtual.equals("sqrt")) { // Nesse ponto vamos para a proxima palavra para analisar a expressão.
             palavraAtual = arq.proximaPalavra();
