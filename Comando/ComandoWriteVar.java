@@ -4,14 +4,25 @@ import Variavel.*;
 	 
 public class ComandoWriteVar extends Comando {
    
-   char variavel;
+   	char variavel;
    	
-   public ComandoWriteVar(int lin, String txt) {
-      
-   }
+   	public ComandoWriteVar(int lin, String txt) {
+    	linha=lin;
+    	variavel=txt.charAt(0);
+   	}
    
-   public int executa( Memoria local, Memoria global) {
-   		
-   }
+   	public int executa( Memoria local, Memoria global) {
+   		int varPosicao = variavel - 97;
+
+   		if((local.var[varPosicao] == -1) && (global.var[varPosicao])){
+   			System.out.println("Erro: variavel nao inicialiada");
+   		}
+
+   		if(local.var[varPosicao] != -1){
+   			System.out.println(local.var[varPosicao]);
+   		}else{
+   			System.out.println(global.var[varPosicao]);
+   		}
+   	}
 }
 
