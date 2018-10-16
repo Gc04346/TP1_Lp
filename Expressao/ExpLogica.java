@@ -20,8 +20,8 @@ public class ExpLogica extends Expressao{
       double avalia1, avalia2;
       cmd1 = (Expressao) exp1;
       cmd2 = (Expressao) exp2;
-      avalia1 = exp1.avalia(local, global);
-      avalia2 = exp2.avalia(local, global);    
+      avalia1 = cmd1.avalia(local, global);
+      avalia2 = cmd2.avalia(local, global);    
    	
       switch(op){
          case "and":
@@ -34,7 +34,7 @@ public class ExpLogica extends Expressao{
             }return FALSE;
          case "not":
             if(avalia1 != 0)
-               return FALSE
+               return FALSE;
             return TRUE;
       }
       return FALSE;

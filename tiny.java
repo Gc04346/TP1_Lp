@@ -7,7 +7,7 @@
    
        public static void main(String[] args) {
       
-         Interpretador inter= new Interpretador("D:\\Dropbox\\_Cefet\\LP\\Laboratório\\TP01\\TP Interpretador Java\\Testes\\atrib.tiny");
+         Interpretador inter= new Interpretador("/home/daniel/Projetos/LP/TP1_Lp/Testes/proc1.tiny");
          //if (args.length == 1) {
             inter.leArquivo();
             inter.executa();

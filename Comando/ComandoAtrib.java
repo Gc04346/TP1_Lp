@@ -10,7 +10,7 @@ public class ComandoAtrib extends Comando {
       
    public ComandoAtrib(int lin, char var, Expressao raizArvoreExpressao) {
       linha = lin;
-      this.variavel = var.charAt(0);
+      this.variavel = var;
       this.exp = raizArvoreExpressao;
    }
    

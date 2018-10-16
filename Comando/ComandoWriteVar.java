@@ -14,7 +14,7 @@ public class ComandoWriteVar extends Comando {
    	public int executa( Memoria local, Memoria global) {
    		int varPosicao = variavel - 97;
 
-   		if((local.var[varPosicao] == -1) && (global.var[varPosicao])){
+   		if((local.var[varPosicao] == -1) && (global.var[varPosicao] == -1)){
    			System.out.println("Erro: variavel nao inicialiada");
    		}
 
@@ -23,6 +23,7 @@ public class ComandoWriteVar extends Comando {
    		}else{
    			System.out.println(global.var[varPosicao]);
    		}
+   		return linha+1;
    	}
 }
 

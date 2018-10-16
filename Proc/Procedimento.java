@@ -21,17 +21,19 @@ public class Procedimento {
    public String getNome(){
       return nome;
    }
-		
+		 
+   // Atribuir valor as variáveis globais.
    public static void setVariaveisGlobal( String [] vG ){	
       char var;
    		
    }
 		
-   public void setVariaveisLocal( String [] vL ){	
+   public void setVariaveisLocal( String [] vL ){
+      this.variaveisLocal = vL;	
    }
 		
    public void setListaComandos( Vector c ){
-      
+      this.comandos = c;
    }
 		
    public void executa(double [] argumentos) {
