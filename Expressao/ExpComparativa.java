@@ -17,8 +17,38 @@ public class ExpComparativa extends Expressao{
    }
    
    public double avalia( Memoria local, Memoria global ) {
-         
-         
-   		      
+      double avalia1, avalia2 = 0;   
+      cmd1 = (Expressao) exp1;
+      cmd2 = (Expressao) exp2;   
+   	avalia1 = cmd1.avalia(local, global);
+      avalia2 = cmd2.avalia(local, global);
+
+      switch(op){
+         case ">":
+            if(avalia2 > avalia1){
+               return TRUE;
+            }return FALSE;
+         case "<":
+            if(avalia2 < avalia1){
+               return TRUE;
+            }return FALSE;
+         case ">=":
+            if(avalia2 >= avalia1){
+               return TRUE;
+            }return FALSE;
+         case "<=":
+            if(avalia2 <= avalia1){
+               return TRUE;
+            }return FALSE;
+         case "<>":
+            if(avalia2 != avalia1){
+               return TRUE;
+            }return FALSE;
+         case "=":
+            if(avalia2 == avalia1){
+               return TRUE;
+            }return FALSE;
+      }
+      return 0;	      
    }
 }	
